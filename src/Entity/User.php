@@ -2,7 +2,11 @@
 
 namespace App\Entity;
 
+use DateTime;
+use DateInterval;
+use DateTimeInterface;
 use App\Repository\UserRepository;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -28,14 +32,24 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'json')]
     private array $roles = [];
 
+    /**
+     * @var string The hashed password
+     */
     #[ORM\Column]
+    #[Assert\NotBlank]
     private ?string $password = null;
+
+    #[Assert\EqualTo(propertyPath: "password", message: "The password and confirmation password must match.")]
+    private $confirmPassword;
 
     #[ORM\Column(type: 'boolean')]
     private bool $isVerified = false;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private ?string $confirmationToken = null;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    private ?\DateTimeInterface $tokenRegistrationLifeTime = null;
 
     #[ORM\ManyToMany(targetEntity: Lessons::class)]
     #[ORM\JoinTable(name: 'user_lessons')]
@@ -45,6 +59,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $this->purchasedLessons = new ArrayCollection();
         $this->roles = ['ROLE_USER'];
+        $this->isVerified = false;
+        //Définit une expiration du token de confirmation dans 24h
+        $this->tokenRegistrationLifeTime = (new Datetime('now'))->add(new DateInterval("P1D"));
+
     }
 
     // Getters & Setters
@@ -110,6 +128,19 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    public function getConfirmPassword(): ?string
+    {
+        return $this->confirmPassword;
+    }
+
+    public function SetConfirmPassword(string $confirmPassword): static
+    {
+        $this->confirmPassword = $confirmPassword;
+
+        return $this;
+    }
+
+
     public function isVerified(): bool
     {
         return $this->isVerified;
@@ -129,6 +160,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setConfirmationToken(?string $confirmationToken): static
     {
         $this->confirmationToken = $confirmationToken;
+        return $this;
+    }
+
+    public function getTokenRegistrationLifeTime(): ?\DateTimeInterface
+    {
+        return $this->tokenRegistrationLifeTime;
+    }
+
+    public function setTokenRegistrationLifeTime(\DateTimeInterface $tokenRegistrationLifeTime): static
+    {
+        $this->tokenRegistrationLifeTime = $tokenRegistrationLifeTime;
+
         return $this;
     }
 
