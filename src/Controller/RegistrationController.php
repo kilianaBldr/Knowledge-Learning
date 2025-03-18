@@ -25,6 +25,7 @@ class RegistrationController extends AbstractController
         Request $request, 
         UserPasswordHasherInterface $passwordHasher, 
         EntityManagerInterface $entityManager,
+        MailerService $mailerService
     ): Response {
         $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);
@@ -43,19 +44,74 @@ class RegistrationController extends AbstractController
             $confirmPassword = $form->get('confirmPassword')->getData();
 
             if ($plainPassword !== $confirmPassword) {
-                $form->get('confirmPassword')->addError(new \Symfony\Component\Form\FormError('Les motes de passe ne correspondent pas.'));
+                $form->get('confirmPassword')->addError(new \Symfony\Component\Form\FormError('Les mots de passe coresspondent pas.'));
             } else {
                 $hashedPassword = $passwordHasher->hashPassword($user, $plainPassword);
                 $user->setPassword($hashedPassword);
                 $entityManager->persist($user);
                 $entityManager->flush();
+                
+                // Générer l'URL de confirmation
+                $confirmationUrl = $this->generateUrl(
+                    'app_verify_email',
+                    ['token' => $confirmationToken],
+                    \Symfony\Component\Routing\Generator\UrlGeneratorInterface::ABSOLUTE_URL
+                );
+                // Envoi de l'e-mail de confirmation
+                $mailerService->send(
+                    $user->getEmail(),
+                    'Confirmation de votre inscription',
+                    'confirmation_email.html.twig',
+                    [
+                        'user' => $user,
+                        'confirmationUrl' => $confirmationUrl,
+                        'lifetimeToken' => $user->getTokenRegistrationLifetime()->format('d-m-Y')
+                    ]
+                );
+                $this->addFlash('success', 'Votre compte a bien été créé, veuillez vérifier vos e-mails pour l\'activer.');
+                return $this->redirectToRoute('app_login');
             }
-
-            return $this->redirectToRoute('app_login');
         }
 
         return $this->render('registration/register.html.twig', [
-            'registrationForm' => $form->createView(),
+            'registrationForm' => $form,
         ]);
+    }
+
+    #[Route('/verify-email/{token}', name: 'app_verify_email', methods: ['GET'])]
+    public function verifyEmail(
+        string $token, 
+        UserRepository $userRepository, 
+        EntityManagerInterface $entityManager,
+        UserAuthenticatorInterface $userAuthenticator,
+        UserAuthenticator $userAuthenticatorService,
+        Request $request
+        ): Response
+    {
+        // Récupérer l'utilisateur via le token
+        $user = $userRepository->findOneBy(['confirmationToken' => $token]);
+
+        if (!$user) {
+            throw $this->createNotFoundException('Ce token est invalide.');
+        }
+
+        // Vérifier si le token a expiré
+        if ($user->getTokenRegistrationLifetime() === null || new \DateTime() > $user->getTokenRegistrationLifetime()) {
+            throw new AccessDeniedException('Le lien de confirmation a expiré.');
+        }
+
+        // Valider l’utilisateur et supprimer le token
+        $user->setIsVerified(true);
+        $user->setConfirmationToken(null);
+        $entityManager->flush();
+
+        $this->addFlash('success', 'Votre compte a bien été activé, vous pouvez maintenant vous connecter.');
+
+        //Connecter autmatiquement l'utilisateur apres activation
+        return $userAuthenticator->authenticateUser(
+            $user,
+            $userAuthenticatorService,
+            $request
+        );
     }
 }

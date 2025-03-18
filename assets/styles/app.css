@@ -1,3 +1,9 @@
+*{
+    font-family: 'Comic Sans MS', cursive, sans-serif;
+}
+
 body {
-    background-color: skyblue;
+    background-color: #f1f8fc;
+    display: flex;
+    flex-direction: column;
 }
