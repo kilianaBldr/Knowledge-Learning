@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Formation{% endblock %}
+
+{% block body %}
+    <h1>Nos formations par Thème</h1>
+
+    <div class="themes-container">
+        {% for theme in themes %}
+            <div class="theme-card">
+                <h2>{{ theme.name }}</h2>
+                <p>Explorez nos cursus dédiés au thème {{ theme.name }}</p>
+                <a href="" class="btn">Voir les cursus</a>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

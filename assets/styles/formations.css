@@ -1,0 +1,29 @@
+.themes-container{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    margin: 2rem;
+}
+
+.theme-card{
+    width: 300px;
+    border: 1px solid #00497c;
+    border-radius: 8px;
+    padding: 20px;
+    text-align: center;
+}
+
+.theme-card h2{
+    margin-bottom: 15px;
+}
+
+.theme-card .btn{
+    padding: 5px 10px;
+    border-radius: 6px;
+    text-decoration: none;
+}
+
+.theme-card .btn:hover{
+    background-color: #5a5b5c;
+}
