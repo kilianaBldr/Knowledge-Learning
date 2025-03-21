@@ -1,0 +1,22 @@
+.home{
+    border: 1px solid #00497c;
+    border-radius: 10px;
+    margin: 3rem;
+    padding: 2rem;
+    text-align: center;
+}
+h1{
+    text-align: center;
+}
+
+a{
+    color:#0074c7;
+    text-decoration: none;
+    padding: 1rem;
+    margin: 0.5rem;
+}
+
+nav a:hover{
+    color:#00497c;
+    text-decoration: underline;
+}

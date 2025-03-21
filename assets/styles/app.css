@@ -1,9 +1,14 @@
 *{
     font-family: 'Comic Sans MS', cursive, sans-serif;
+    box-sizing: border-box;
 }
 
 body {
+    min-height: 100vh;
     background-color: #f1f8fc;
     display: flex;
     flex-direction: column;
+}
+main {
+    margin: 1rem;
 }
