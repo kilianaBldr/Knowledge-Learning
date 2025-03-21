@@ -19,11 +19,13 @@
 }
 
 .theme-card .btn{
+    background-color: #00497c;
+    color: #fff;
     padding: 5px 10px;
     border-radius: 6px;
     text-decoration: none;
 }
 
 .theme-card .btn:hover{
-    background-color: #5a5b5c;
+    background-color: #384050;
 }

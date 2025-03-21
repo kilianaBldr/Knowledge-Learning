@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Cursus{% endblock %}
+
+{% block body %}
+    <h1>Cursus du thème : {{ theme.name }}</h1>
+    <div class="cursus-container">
+        {% for cursus in theme.cursuses %}
+            <div class="cursus-card">
+                <h2>{{ cursus.name }}</h2>
+                <p>Prix : {{ cursus.price }} €</p>
+                <a href="#" class="btn">Voir les leçons</a>
+            </div>
+        {% else %}
+            <p>Aucun cursus disponible pour ce thème.</p>
+        {% endfor %}
+    </div>
+    <a href="{{ path('app_formations') }}" class="btn">Retour aux thèmes</a>
+{% endblock %}
