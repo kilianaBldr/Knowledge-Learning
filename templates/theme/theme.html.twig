@@ -8,8 +8,11 @@
         {% for cursus in theme.cursuses %}
             <div class="cursus-card">
                 <h2>{{ cursus.name }}</h2>
-                <p>Prix : {{ cursus.price }} €</p>
-                <a href="#" class="btn">Voir les leçons</a>
+                {% if app.user and cursus not in app.user.purchasedCursus %}
+                    <p>Prix : {{ cursus.price }} €</p>
+                    <a href="#" class="btn">Acheter ce cursus</a>
+                {% endif %}
+                <a href="{{ path('app_cursus_show', {'id': cursus.id}) }}" class="btn">Voir les leçons</a>
             </div>
         {% else %}
             <p>Aucun cursus disponible pour ce thème.</p>

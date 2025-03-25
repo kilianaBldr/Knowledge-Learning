@@ -56,6 +56,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\JoinTable(name: 'user_lessons')]
     private Collection $purchasedLessons;
 
+    #[ORM\ManyToMany(targetEntity: Cursus::class)]
+    #[ORM\JoinTable(name: 'user_cursus')]
+    private Collection $purchasedCursus;
+
     #[ORM\Column(type: 'datetime_immutable')]
     #[Assert\NotNull()]
     private ?\DateTimeImmutable $createdAt;
@@ -69,6 +73,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->createdAt = new \DateTimeImmutable();
         $this->updatedAt = new \DateTimeImmutable();
         $this->purchasedLessons = new ArrayCollection();
+        $this->purchasedCursus = new ArrayCollection();
         $this->roles = ['ROLE_USER'];
         $this->isVerified = false;
         //Définit une expiration du token de confirmation dans 24h
@@ -212,6 +217,20 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         return $this->purchasedLessons->contains($lesson);
     }
+
+    public function getPurchasedCursus(): Collection
+    {
+        return $this->purchasedCursus;
+    }
+
+    public function addPurchasedCursus(Cursus $cursus): static
+    {
+        if (!$this->purchasedCursus->contains($cursus)) {
+            $this->purchasedCursus->add($cursus);
+        }
+        return $this;
+    }
+
 
     public function setCreatedAt(?\DateTimeImmutable $createdAt): static
     {
