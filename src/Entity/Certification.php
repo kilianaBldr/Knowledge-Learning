@@ -25,6 +25,10 @@ class Certification
     #[ORM\JoinColumn(nullable: true)]
     private ?Lessons $lesson = null;
 
+    #[ORM\ManyToOne(targetEntity: Theme::class)]
+    #[ORM\JoinColumn(nullable: true)]
+    private ?Theme $theme = null;
+
     #[ORM\Column(type: 'datetime')]
     private \DateTimeInterface $dateObtained;
 

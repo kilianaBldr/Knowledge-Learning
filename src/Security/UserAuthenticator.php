@@ -39,6 +39,8 @@ class UserAuthenticator extends AbstractLoginFormAuthenticator
 
         $request->getSession()->set(SecurityRequestAttributes::LAST_USERNAME, $name);
 
+        $user = $this->userRepository->findOneby(['name' => $name]);
+
         if(!$user) {
             throw new CustomUserMessageAuthenticationException('Identifiants incorrects.');
         }
