@@ -1,4 +1,6 @@
 .lesson-container {
+    display: flex;
+    flex-wrap: wrap;
     max-width: 900px;
     margin: 30px auto;
     padding: 30px;
@@ -7,6 +9,9 @@
     border: 1px solid #ccc;
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     text-align: center;
+    align-items: center;
+    flex-direction: column;
+    align-content: center;
 }
 
 .lesson-container h1 {
@@ -41,5 +46,22 @@
 }
 
 .lesson-container .btn:hover {
+    background-color: #384050;
+}
+
+.lesson-actions{
+    margin-top: 20px;
+}
+
+.lesson-actions .btn{
+    margin-bottom: 1rem;
+    background-color: #00497c;
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 6px;
+    text-decoration: none;
+}
+
+.lesson-actions .btn:hover{
     background-color: #384050;
 }

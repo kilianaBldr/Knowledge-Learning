@@ -5,12 +5,12 @@
 {% block body %}
     <h1>Nos formations par Thème</h1>
 
-    <div class="themes-container">
+    <div class="formation-container">
         {% for theme in themes %}
-            <div class="theme-card">
+            <div class="formation-card">
                 <h2>{{ theme.name }}</h2>
                 <p>Explorez nos cursus dédiés au thème {{ theme.name }}</p>
-                <a href="{{ path('app_theme_show', {'id':theme.id}) }}" class="btn">Voir les cursus</a>
+                <a href="{{ path('app_theme_show', {'id':theme.id}) }}" class="btn-formation">Voir les cursus</a>
             </div>
         {% endfor %}
     </div>

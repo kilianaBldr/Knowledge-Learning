@@ -7,12 +7,13 @@
         <h1>{{ lesson.name }}</h1>
         <p>{{ lesson.description }}</p>
 
-        <video controls>
+        <video width="500" controls>
             <source src="{{ asset(lesson.videoFile) }}" type="video/mp4">
             Votre navigateur ne supporte pas la vidéo.
         </video>
 
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus tellus tortor, tempor non vehicula vitae, 
+        <p>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus tellus tortor, tempor non vehicula vitae, 
         vestibulum at nisi. Donec nibh nulla, fermentum ac risus id, blandit suscipit magna. Sed laoreet lorem quis accumsan faucibus. 
         Suspendisse augue ligula, pretium vel bibendum vitae, consectetur ut ex. Mauris tincidunt sit amet tellus eu tristique. 
         Donec iaculis massa sit amet malesuada ullamcorper. Sed massa dolor, faucibus sit amet massa at, facilisis dignissim sem.
@@ -20,7 +21,14 @@
         condimentum eget ultrices sit amet, egestas non mi. Pellentesque aliquet elit justo, id mollis nisi feugiat et. 
         Nunc et erat ex. Mauris rutrum a eros sed tincidunt. Nam efficitur quam orci. 
         Nam aliquam, quam non rhoncus aliquam, metus felis laoreet tortor, ut convallis ex mauris vel sapien. Donec pellentesque tincidunt augue. 
-        Suspendisse dui erat, placerat non turpis nec, convallis mollis orci.</p>
+        Suspendisse dui erat, placerat non turpis nec, convallis mollis orci.
+        </p>
+
+        <div class="lesson-actions">
+            <form action="{{ path('app_lesson_validate', {'id': lesson.id}) }}" method="POST">
+                <button type="submit" class="btn">Valider cette leçon</button>
+            </form>
+        </div>
 
         <a href="{{ path('app_cursus_show', {'id': lesson.cursus.id}) }}" class="btn">← Retour au cursus</a>
     </div>

@@ -1,4 +1,4 @@
-.cursus-container {
+.theme-container {
     display: flex;
     flex-wrap: wrap;
     gap: 30px;
@@ -7,7 +7,7 @@
 }
 
 /* Carte de chaque cursus */
-.cursus-card {
+.theme-card {
     width: 300px;
     background-color: #f9f9f9;
     border: 1px solid #ccc;
@@ -21,48 +21,67 @@
     align-items: center;
 }
 
-.cursus-card:hover {
+.theme-card:hover {
     transform: translateY(-5px);
     box-shadow: 0 6px 12px rgba(0,0,0,0.2);
 }
 
 /* Titre du cursus */
-.cursus-card h3 {
+.theme-card h3 {
     margin-bottom: 15px;
     color: #333;
     font-size: 1.4em;
 }
 
 /* Description ou prix */
-.cursus-card p {
+.theme-card p {
     font-size: 1em;
     color: #555;
     margin-bottom: 20px;
 }
 
 /* Bouton */
-.cursus-card .btn {
+.theme-card .btn-theme {
+    display: flex;
+    align-items: center;
     background-color: #00497c;
     color: #fff;
+    margin-top: 1rem;
     padding: 4px 8px;
     border-radius: 8px;
     text-decoration: none;
     font-weight: bold;
     transition: background-color 0.3s;
 }
-
-.cursus-card .btn:hover {
+.btn-purchased {
+    margin-bottom: 0.5rem;
+    background-color: #00497c;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 6px;
+    text-decoration: none;
+    transition: background-color 0.3s;
+}
+.btn-purchased:hover {
+    color: white;
     background-color: #384050;
 }
 
-.btn{
-    border: 1px solid #00497c;
-    color: #00497c;
-    padding: 8px 10px;
-    border-radius: 8px;
+.theme-card .btn:hover {
+    background-color: #384050;
 }
 
-.btn:hover{
-    color: #ffffff;
+.btn-theme{
+    display: flex;
+    align-items: center;
+    background-color: #00497c;
+    color: white;
+    padding: 8px 10px;
+    border-radius: 8px;
+    text-decoration: none;
+}
+
+.btn-theme:hover{
+    color: white;
     background-color: #384050;
 }

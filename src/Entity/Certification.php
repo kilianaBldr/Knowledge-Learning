@@ -18,7 +18,7 @@ class Certification
     private ?User $user = null;
 
     #[ORM\ManyToOne(targetEntity: Cursus::class)]
-    #[ORM\JoinColumn(nullable: true)]
+    #[ORM\JoinColumn(nullable: false)]
     private ?Cursus $cursus = null;
 
     #[ORM\ManyToOne(targetEntity: Lessons::class)]
@@ -26,7 +26,7 @@ class Certification
     private ?Lessons $lesson = null;
 
     #[ORM\ManyToOne(targetEntity: Theme::class)]
-    #[ORM\JoinColumn(nullable: true)]
+    #[ORM\JoinColumn(nullable: false)]
     private ?Theme $theme = null;
 
     #[ORM\Column(type: 'datetime')]
