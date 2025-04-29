@@ -10,21 +10,66 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use App\Service\StripeService;
+
 
 final class CartController extends AbstractController
 {
     #[Route('/cart', name: 'app_cart_show')]
-    public function show(CartService $cartService, EntityManagerInterface $em): Response
+    public function show(CartService $cartService, EntityManagerInterface $em, StripeService $stripeService
+    ): Response
     {
         $cart = $cartService->getCart();
-        $lessons = $em->getRepository(Lessons::class)->findBy(['id' => $cart['lessons']]);
-        $cursuses = $em->getRepository(Cursus::class)->findBy(['id' => $cart['cursuses']]);
+        $lessons = $em->getRepository(\App\Entity\Lessons::class)->findBy(['id' => $cart['lessons']]);
+        $cursuses = $em->getRepository(\App\Entity\Cursus::class)->findBy(['id' => $cart['cursuses']]);
         $total = $cartService->getTotal($em);
+
+        $user = $this->getUser();
+        if (!$user) {
+            return $this->redirectToRoute('app_login');
+        }
+
+
+        $lineItems = [];
+
+        foreach ($lessons as $lesson) {
+            $lineItems[] = [
+                'price_data' => [
+                    'currency' => 'eur',
+                    'product_data' => [
+                        'name' => $lesson->getName(),
+                    ],
+                    'unit_amount' => $lesson->getPrice() * 100,
+                ],
+                'quantity' => 1,
+            ];
+        }
+
+        foreach ($cursuses as $cursus) {
+            $lineItems[] = [
+                'price_data' => [
+                    'currency' => 'eur',
+                    'product_data' => [
+                        'name' => $cursus->getName(),
+                    ],
+                    'unit_amount' => $cursus->getPrice() * 100,
+                ],
+                'quantity' => 1,
+            ];
+        }
+
+        $session = $stripeService->createCheckoutSession(
+            $lineItems,
+            $this->generateUrl('app_stripe_success', [], 0),
+            $this->generateUrl('app_cart_show', [], 0),
+        );
 
         return $this->render('cart/panier.html.twig', [
             'lessons' => $lessons,
             'cursuses' => $cursuses,
             'total' => $total,
+            'checkoutUrl' => $session->url
+
         ]);
     }
     #[Route('/cart/add/lesson/{id}', name: 'app_cart_add_lesson')]
