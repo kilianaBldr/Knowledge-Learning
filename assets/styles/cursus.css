@@ -18,8 +18,11 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+<<<<<<< HEAD
     justify-content: center;
 
+=======
+>>>>>>> 08e175c (Ajout Certification)
 }
 
 .cursus-card:hover {
@@ -41,6 +44,10 @@
 
 .cursus-card .btn {
     display: flex;
+<<<<<<< HEAD
+=======
+    height: 100%;
+>>>>>>> 08e175c (Ajout Certification)
     background-color: #00497c;
     color: #fff;
     margin-top: 1rem;
