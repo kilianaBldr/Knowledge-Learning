@@ -18,6 +18,8 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
+
 }
 
 .cursus-card:hover {
@@ -39,7 +41,6 @@
 
 .cursus-card .btn {
     display: flex;
-    height: 100%;
     background-color: #00497c;
     color: #fff;
     margin-top: 1rem;
